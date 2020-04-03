@@ -1,0 +1,111 @@
+openapi: 3.0.1
+info:
+  title: ImageCompare
+  description: API
+  version: "0.0"
+paths:
+  /some-file:
+    post:
+      operationId: upload
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+                - someOtherField
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  nullable: false
+                someOtherField:
+                  minLength: 1
+                  type: string
+                  nullable: false
+        required: true
+      responses:
+        default:
+          description: upload default response
+          content:
+            text/plain:
+              schema:
+                type: string
+components:
+  schemas:
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    Project:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        apiKey:
+          type: string
+    GeneratedIdResponse:
+      type: object
+      properties:
+        id:
+          type: string
+    TestRun:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        projectId:
+          type: string
+          format: uuid
+        status:
+          type: string
+        uploadStatus:
+          type: string
+        targetBaselineId:
+          type: string
+          format: uuid
+        targetBaselineName:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        finishedAt:
+          type: string
+          format: date-time
+          nullable: true
+        screenshots:
+          type: array
+          items:
+            $ref: '#/components/schemas/Screenshot'
+    Screenshot:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        url:
+          type: string
+    UserData:
+      type: object
+      properties:
+        id:
+          type: string
+        userName:
+          type: string
+        emailAddress:
+          type: string
+  securitySchemes:
+    IMAGECOMPR_SESSIONID:
+      type: apiKey
+      description: Session ID in BASE64 format, stored in a cookie
+      in: cookie
